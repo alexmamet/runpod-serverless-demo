@@ -5,6 +5,6 @@ COPY pyproject.toml .
 RUN pip install --no-cache-dir uv
 RUN uv pip install -r pyproject.toml --system
 
-COPY hello_world.py handler.py
+COPY hello_world.py hello_world.py
 
-CMD python -u /handler.py
+CMD python -u /hello_world.py
