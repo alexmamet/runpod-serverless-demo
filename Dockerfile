@@ -1,4 +1,4 @@
-FROM runpod/base:0.6.3-cuda11.8.0
+FROM python:3.12-slim
 
 COPY pyproject.toml .
 
