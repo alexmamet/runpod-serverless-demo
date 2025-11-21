@@ -1,10 +1,11 @@
 FROM runpod/base:0.6.3-cuda11.8.0
-
+ARG HF_TOKEN
 COPY pyproject.toml .
 
 
 RUN pip install --no-cache-dir uv
 RUN uv pip install 'huggingface_hub[cli,torch]' --system
+RUN huggingface-cli login --token $HF_TOKEN
 
 #base model
 RUN hf download Qwen/Qwen-Image-Edit
