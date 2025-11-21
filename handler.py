@@ -2,7 +2,6 @@ import base64
 
 import runpod
 import torch
-import peft
 import time
 from PIL import Image
 import io
@@ -17,17 +16,17 @@ pipeline = QwenImageEditPipeline.from_pretrained("Qwen/Qwen-Image-Edit")
 pipeline = pipeline.to(torch.bfloat16)
 logger.debug("Qwen downloaded")
 
-lora_path_4_step = hf_hub_download(
+lora_path_step = hf_hub_download(
     repo_id="lightx2v/Qwen-Image-Lightning",
-    filename="Qwen-Image-Edit-Lightning-4steps-V1.0-bf16.safetensors",
+    filename="Qwen-Image-Edit-Lightning-8steps-V1.0-bf16.safetensors",
 )
 logger.debug("Lora 1 downloaded")
 lora_path_nsfw = hf_hub_download(
-    repo_id="lightx2v/Qwen-Image-Lightning",
-    filename="Qwen-Image-Edit-Lightning-4steps-V1.0-bf16.safetensors",
+    repo_id="mlgethoney/qwen-lora-nsfw",
+    filename="qwen_big_run_v1_3200+14600_edit_plus-step00014000.safetensors",
 )
 logger.debug("Lora 2 downloaded")
-pipeline.load_lora_weights(lora_path_4_step, adapter_name="steps")
+pipeline.load_lora_weights(lora_path_step, adapter_name="steps")
 pipeline.load_lora_weights(lora_path_nsfw, adapter_name="nsfw")
 pipeline.set_adapters(["steps", "nsfw"], adapter_weights=[1.0, 1.0])
 logger.debug("Lora downloaded")
@@ -52,7 +51,7 @@ def handler(job):
     output = pipeline(
         image=image,
         prompt=job_input["prompt"],
-        num_inference_steps=job_input.get("num_inference_steps", 4),
+        num_inference_steps=job_input.get("num_inference_steps", 8),
         generator=torch.manual_seed(10**4),
     )
     logger.info(f"Image generated. Time taken: {time.time() - t0}")
