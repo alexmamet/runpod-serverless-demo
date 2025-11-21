@@ -15,6 +15,7 @@ from loguru import logger
 logger.debug(sys.executable)
 
 pipeline = QwenImageEditPipeline.from_pretrained("Qwen/Qwen-Image-Edit")
+pipeline = pipeline.to(torch.bfloat16)
 logger.debug('Qwen downloaded')
 
 lora_path_4_step = hf_hub_download(
