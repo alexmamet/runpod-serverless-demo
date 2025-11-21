@@ -5,7 +5,7 @@ COPY pyproject.toml .
 
 RUN pip install --no-cache-dir uv
 RUN uv pip install 'huggingface_hub[cli,torch]' --system
-RUN huggingface-cli login --token $HF_TOKEN
+RUN hf auth login --token $HF_TOKEN
 
 RUN hf download Qwen/Qwen-Image-Edit
 
