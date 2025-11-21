@@ -5,6 +5,9 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "diffusers>=0.35.2",
+    "loguru>=0.7.3",
+    "peft>=0.18.0",
     "runpod>=1.7.13",
     "torch>=2.9.1",
     "tqdm>=4.67.1",

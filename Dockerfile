@@ -16,6 +16,6 @@ RUN hf download lightx2v/Qwen-Image-Lightning Qwen-Image-Edit-Lightning-4steps-V
 
 RUN uv pip install -r pyproject.toml --system
 
-COPY hello_world.py hello_world.py
+COPY handler.py hello_world.py
 
 CMD python -u /hello_world.py
