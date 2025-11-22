@@ -9,6 +9,7 @@ from diffusers import QwenImageEditPipeline
 from huggingface_hub import hf_hub_download
 import sys
 from loguru import logger
+import httpx
 
 logger.debug(sys.executable)
 
@@ -37,15 +38,28 @@ logger.debug("Lora Fused")
 
 def handler(job):
     """
-    This is a simple handler that takes a name as input and returns a greeting.
+    Handler that processes image editing requests.
+    Accepts either image URL or base64 encoded image.
     The job parameter contains the input data in job["input"]
     """
     job_input = job["input"]
     logger.info(f"Recv {str(job_input)[:250]}...")
 
-    image_base64 = job_input["image"]
-    image_bytes = base64.b64decode(image_base64)
-    image = Image.open(io.BytesIO(image_bytes))
+    # Check if input is URL or base64
+    image_input = job_input.get("image") or job_input.get("image_url")
+
+    if image_input.startswith(("http://", "https://")):
+        # Download image from URL using httpx
+        logger.info(f"Downloading image from URL: {image_input}")
+        with httpx.Client(timeout=30.0) as client:
+            response = client.get(image_input)
+            response.raise_for_status()
+            image = Image.open(io.BytesIO(response.content))
+    else:
+        # Decode base64 image
+        logger.info("Processing base64 encoded image")
+        image_bytes = base64.b64decode(image_input)
+        image = Image.open(io.BytesIO(image_bytes))
 
     t0 = time.time()
     output = pipeline(

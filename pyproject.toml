@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "diffusers>=0.35.2",
+    "httpx",
     "loguru>=0.7.3",
     "peft>=0.18.0",
     "runpod>=1.7.13",
