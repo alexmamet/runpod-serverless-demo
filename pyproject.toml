@@ -10,6 +10,7 @@ dependencies = [
     "peft>=0.18.0",
     "runpod>=1.7.13",
     "torch>=2.9.1",
+    "torchvision>=0.24.1",
     "tqdm>=4.67.1",
     "transformers>=4.57.1",
 ]
