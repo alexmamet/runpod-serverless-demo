@@ -71,8 +71,9 @@ def handler(job):
     )
     logger.info(f"Image generated. Time taken: {time.time() - t0}")
     output_image = output.images[0]
-    output_image_base64 = base64.b64encode(output_image.tobytes()).decode("ascii")
-    return {"image_base64": output_image_base64}
+    buffered = io.BytesIO()
+    output_image.save(buffered, format="JPEG")
+    output_image_base64 = base64.b64encode(buffered.getvalue()).decode("ascii")
 
 
 runpod.serverless.start({"handler": handler})
