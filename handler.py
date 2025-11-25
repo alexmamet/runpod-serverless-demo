@@ -74,6 +74,7 @@ def handler(job):
     buffered = io.BytesIO()
     output_image.save(buffered, format="JPEG")
     output_image_base64 = base64.b64encode(buffered.getvalue()).decode("ascii")
+    return {"image_base64": output_image_base64}
 
 
 runpod.serverless.start({"handler": handler})
