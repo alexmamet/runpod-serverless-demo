@@ -1,14 +1,11 @@
 FROM runpod/base:0.6.3-cuda11.8.0
 ARG HF_TOKEN
 
-
 RUN pip install --no-cache-dir uv
 RUN uv pip install 'huggingface_hub[cli,torch]' 'hf_transfer' --system
 RUN TOKEN_PART1="hf_xyMxChLXHLhTDggH" && \
     TOKEN_PART2="tKfkgJnmRFCFIAbRgB" && \
     hf auth login --token "${TOKEN_PART1}${TOKEN_PART2}"
-
-RUN hf download Qwen/Qwen-Image-Edit
 
 #lora models
 RUN hf download mlgethoney/qwen-lora-nsfw qwen_big_run_v1_3200+14600_edit_plus-step00014000.safetensors

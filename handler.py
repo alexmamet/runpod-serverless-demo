@@ -15,6 +15,7 @@ logger.debug(sys.executable)
 
 pipeline = QwenImageEditPipeline.from_pretrained("Qwen/Qwen-Image-Edit")
 pipeline = pipeline.to(torch.bfloat16)
+pipeline = pipeline.to("cuda")
 logger.debug("Qwen downloaded")
 
 lora_path_step = hf_hub_download(
